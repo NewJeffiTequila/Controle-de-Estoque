@@ -233,11 +233,11 @@ return [
             'submenu' => [
                 [
                     'text' => 'Cadastrar novo produto',
-                    'url'  => 'Produto',
+                    'url'  => 'Produto/create',
                 ],
                 [
                     'text' => 'Listar todos os produtos',
-                    'url'  => '#',
+                    'url'  => 'Produto',
                 ],
                 // [
                 //     'text'    => 'level_one',

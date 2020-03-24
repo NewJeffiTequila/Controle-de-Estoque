@@ -4,9 +4,20 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Product;
+use GuzzleHttp\RequestOptions;
 
 class ProductController extends Controller
 {
+    private $rota = 'Produto';
+    private $view = 'auth.product.index';
+    private $titulo = 'Produto';
+
+    public function __construct(){
+        
+        view()->share('rota', 'Produto.');
+        view()->share('titulo', $this->titulo);
+        
+    }
     /**
      * Display a listing of the resource.
      *
@@ -25,7 +36,7 @@ class ProductController extends Controller
      */
     public function create()
     {
-        //
+        return view('auth.product.create');
     }
 
     /**
@@ -36,7 +47,22 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        \DB::transaction();
+            try {
+                Product::create([
+                    'name' =>  $request->name,
+                    'amount' =>  $request->amount,
+                    'value_buy' =>  $request->value_buy,
+                    // 'name' =>  $request->name,
+                ]);
+        \DB::commit();
+                return redirect('Produto')->with(['success'=>'Produto cadastro com sucesso.']);        
+            } catch (\Throwable $th) {
+                //throw $th;
+        \DB::rollback();
+                return redirect()->back()->with(['error'=>'Ocorreu um erro tente novamente mais tarde. '.$e->getMessage()]);
+        
+            }
     }
 
     /**
